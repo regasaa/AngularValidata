@@ -1,0 +1,45 @@
+<kendo-appbar position="top" >
+  <kendo-appbar-section>
+    <button kendoButton fillMode="flat">
+      <kendo-icon name="menu"></kendo-icon>
+    </button>
+  </kendo-appbar-section>
+
+  <kendo-appbar-section>
+    <h1 class="title">Validata Angular Assignment</h1>
+  </kendo-appbar-section>
+
+  <kendo-appbar-spacer width="30px"></kendo-appbar-spacer>
+
+  <kendo-appbar-section>
+    <ul>
+      <li routerLink="/add" *ngIf="isAdmin"><span>Add User</span></li>
+      <li routerLink="/update" *ngIf="isAdmin||isEditor"><span>Update User</span></li>
+      <li routerLink="/list"><span>List User</span></li>
+      <li routerLink="/delete" *ngIf="isAdmin||isManager"><span>Delete</span></li>
+    </ul>
+  </kendo-appbar-section>
+
+  <kendo-appbar-spacer></kendo-appbar-spacer>
+
+  <kendo-appbar-section>
+    <ul>
+      <li (click)="logout()">Logout</li>
+    </ul>
+  </kendo-appbar-section>
+
+  <kendo-appbar-section class="actions">
+    <kendo-badge-container>
+      <button kendoButton fillMode="flat">
+        <kendo-icon name="bell"></kendo-icon>
+      </button>
+      <kendo-badge shape="dot" themeColor="warning" size="small" position="inside"></kendo-badge>
+    </kendo-badge-container>
+    <span class="k-appbar-separator"></span>
+  </kendo-appbar-section>
+
+
+  <kendo-appbar-section>
+    <kendo-avatar [imageSrc]="kendokaAvatar" shape="circle" width="26px" height="26px"></kendo-avatar>
+  </kendo-appbar-section>
+</kendo-appbar>

@@ -1,0 +1,56 @@
+<app-navbar></app-navbar>
+
+<div class="example">
+  <form class="k-form" [formGroup]="form">
+    <kendo-formfield>
+      <kendo-label [for]="firstName" text="First Name"></kendo-label>
+      <kendo-textbox formControlName="firstName" [clearButton]="true" #firstName required></kendo-textbox>
+
+      <kendo-formerror>Error: First Name is required</kendo-formerror>
+    </kendo-formfield>
+
+    <kendo-formfield>
+      <kendo-label [for]="lastName" text="Last Name"></kendo-label>
+      <kendo-textbox formControlName="lastName" [clearButton]="true" #lastName required></kendo-textbox>
+
+      <kendo-formerror>Error: Last Name is required</kendo-formerror>
+    </kendo-formfield>
+
+    <kendo-formfield>
+      <kendo-label [for]="email" text="Email"></kendo-label>
+      <kendo-textbox formControlName="email" [clearButton]="true" #email required></kendo-textbox>
+
+      <kendo-formerror *ngIf="form.controls.email.errors?.required">Error: Email is required</kendo-formerror>
+      <kendo-formerror *ngIf="form.controls.email.errors?.email">Error: Not valid email format</kendo-formerror>
+    </kendo-formfield>
+
+    <kendo-label text="Role"></kendo-label>
+    <kendo-combobox formControlName="role" [clearButton]="true" [data]="listItems" textField="text" valueField="value"
+      placeholder="Select Role">
+    </kendo-combobox>
+
+    <kendo-formfield showHints="initial" showErrors="initial">
+      <kendo-label [for]="phoneNumber" text="Phone Number"></kendo-label>
+      <kendo-maskedtextbox #phoneNumber formControlName="phoneNumber" [mask]="phoneNumberMask"
+        [value]="phoneNumberValue"></kendo-maskedtextbox>
+
+      <kendo-formhint align="start">Hint: Your active phone number</kendo-formhint>
+      <kendo-formerror>
+        <div *ngIf="form.controls.phoneNumber.errors">
+          Error: Not a valid phone number format
+        </div>
+        <div *ngIf="form.controls.phoneNumber.errors?.required">
+          Error: Phone number is required
+        </div>
+      </kendo-formerror>
+    </kendo-formfield>
+
+    <div class="k-form-buttons">
+
+      <button kendoButton themeColor="primary" (click)="submitForm()">
+        Update
+      </button>
+      <button kendoButton (click)="clearForm()">Clear</button>
+    </div>
+  </form>
+</div>

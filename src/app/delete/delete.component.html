@@ -1,0 +1,22 @@
+<app-navbar></app-navbar>
+
+<div class="example">
+    <form class="k-form" [formGroup]="form">
+        
+        <kendo-formfield>
+            <kendo-label [for]="email" text="Email"></kendo-label>
+            <kendo-textbox formControlName="email" [clearButton]="true" #email required></kendo-textbox>
+
+            <kendo-formerror *ngIf="form.controls.email.errors?.required">Error: Email is required</kendo-formerror>
+            <kendo-formerror *ngIf="form.controls.email.errors?.email">Error: Not valid email format</kendo-formerror>
+        </kendo-formfield>
+
+
+        <div class="k-form-buttons">
+            <button kendoButton themeColor="primary" (click)="submitForm()">
+                Delete
+            </button>
+            <button kendoButton (click)="clearForm()">Clear</button>
+        </div>
+    </form>
+</div>

@@ -1,0 +1,31 @@
+<app-navbar></app-navbar>
+
+
+<kendo-grid
+      [data]="gridData"
+      [pageable]="true"
+      [pageSize]="state.take"
+      [skip]="state.skip"
+      [sortable]="true"
+      [sort]="state.sort"
+      [filterable]="true"
+      [filter]="state.filter"
+      [groupable]="true"
+      [group]="state.group"
+      (dataStateChange)="dataStateChange($event)"
+    >
+    <kendo-grid-column field="firstName" title="First Name"> </kendo-grid-column>
+    <kendo-grid-column field="lastName" title="Last Name"> </kendo-grid-column>
+    <kendo-grid-column field="email" title="Email"> </kendo-grid-column>
+    <kendo-grid-column field="phoneNumber" title="Phone Number"> </kendo-grid-column>
+    <kendo-grid-column field="role" title="Role" > </kendo-grid-column>
+    <!-- <div class="k-form-buttons">
+        <button kendoButton themeColor="primary" (click)="updateForm()">
+            Update
+        </button>
+        <button kendoButton themeColor="primary" (click)="deleteForm()">
+            Delete
+        </button>
+        <button kendoButton (click)="clearForm()">Clear</button>
+    </div> -->
+</kendo-grid>
