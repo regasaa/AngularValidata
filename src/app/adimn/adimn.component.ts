@@ -63,8 +63,13 @@ export class AdimnComponent {
       this.authService.createUser(this.form.value.firstName, this.form.value.lastName, this.form.value.email, this.form.value.role.value, this.form.value.phoneNumber)
         .subscribe(
           data => {
+            if (data == null) {
+              this.message = "Email Already Exist"
+              this.showWarn()
+            } else {
             this.message = "Successful User Created"
             this.showSuccess();
+            }
           },
           error => {
             this.message = "Successful User Created"
@@ -107,6 +112,15 @@ export class AdimnComponent {
       position: { horizontal: "center", vertical: "top" },
       animation: { type: "fade", duration: 600 },
       type: { style: "error", icon: true },
+    });
+  }
+  public showWarn(): void {
+    this.notificationService.show({
+      content: this.message,
+      hideAfter: 600,
+      position: { horizontal: "center", vertical: "top" },
+      animation: { type: "fade", duration: 600 },
+      type: { style: "warning", icon: true },
     });
   }
 

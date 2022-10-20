@@ -45,57 +45,103 @@ export class AuthService {
 
     createUser(firstName: string, lastName: string, email: string, role: string, phoneNumber: string) {
         let dataUser: Data[]
+        let ok: boolean | null = null
         return this.http.post<any>(`${environment.apiUrl}/users/create`, { firstName, lastName, email, role, phoneNumber })
             .pipe(map((userCreate) => {
-                console.log('--- >> ' + userCreate)
+                //console.log('--- >> ' + userCreate.email)
                 if (userCreate) {
-                    dataUser = [userCreate]
-                    if (localStorage.getItem('userData')) {
-                        const existUserData: Data[] = JSON.parse(localStorage.getItem('userData')!);
-                        existUserData.push(userCreate)
+                    if (this.exist(userCreate.email)) {
+                        ok = null
+                    } else {
+                        dataUser = [userCreate]
+                        if (localStorage.getItem('userData')) {
+                            const existUserData: Data[] = JSON.parse(localStorage.getItem('userData')!);
+                            existUserData.push(userCreate)
 
-                        dataUser = existUserData
+                            dataUser = existUserData
+                            localStorage.setItem('userData', JSON.stringify(dataUser));
+                        }
                         localStorage.setItem('userData', JSON.stringify(dataUser));
+                        ok = !null
                     }
-                    localStorage.setItem('userData', JSON.stringify(dataUser));
                 }
-                return userCreate;
+                return ok
             }))
     }
 
-    updateUser(email: string) {
-        return this.http.put<any>(`${environment.apiUrl}/users/update`, { email })
+    updateUser(firstName: string, lastName: string, email: string, role: string, phoneNumber: string) {
+        let ok: boolean | null = null
+        return this.http.put<any>(`${environment.apiUrl}/users/update`, { firstName, lastName, email, role, phoneNumber })
             .pipe(map((updateCreate) => {
-                const existUserData: Data[] = JSON.parse(localStorage.getItem('userData')!);
-                existUserData.forEach((value, index) => {
-                    if (value.email == updateCreate)
-                        console.log('Search List ' + JSON.stringify(existUserData[index]))
-                    //existUserData.splice(index, 1);
-                });
+                if (this.exist(updateCreate.email)) {
+                    const existUserData: Data[] = JSON.parse(localStorage.getItem('userData')!);
+                    existUserData.forEach((value, index) => {
+                        if (value.email == updateCreate.email) {
+                            let dataUser: Data[]
+                            
+                            existUserData[index] = updateCreate
+                            ok = !null
+                            dataUser = existUserData
+                            console.log('Update ' + dataUser)
+                            localStorage.setItem('userData', JSON.stringify(dataUser));
+                        }
+                        //console.log('Search List ' + JSON.stringify(existUserData[index]))
+
+                        //existUserData.splice(index, 1);
+                    });
+                    
+                } else {
+                    ok = null
+                }
+
                 //console.log(existUserData)
+                return ok
 
             }))
 
     }
 
     deleteUser(email: string) {
-        console.log('Delete '+email)
-        return this.http.delete(`${environment.apiUrl}/users/delete/${email}`)
+        console.log('Delete ' + email)
+        let ok = null
+        return this.http.delete<any>(`${environment.apiUrl}/users/delete/${email}`)
             .pipe(map((updateCreate) => {
-                let dataUser: Data[]
-                const existUserData: Data[] = JSON.parse(localStorage.getItem('userData')!);
-                existUserData.forEach((value, index) => {
-                    if (value.email == updateCreate) {
-                        console.log('Delete Search List ' + JSON.stringify(existUserData[index]))
-                        existUserData.splice(index, 1);
-                    }
-                });
+                console.log('Exis or not ' + this.exist(updateCreate))
+                if (this.exist(updateCreate)) {
 
-                console.log(existUserData)
-                dataUser=existUserData
+                    let dataUser: Data[]
+                    const existUserData: Data[] = JSON.parse(localStorage.getItem('userData')!);
+                    existUserData.forEach((value, index) => {
+                        if (value.email == updateCreate) {
+                            console.log('Delete Search List ' + JSON.stringify(existUserData[index]))
+                            existUserData.splice(index, 1);
+                        }
+                    });
+                    console.log(existUserData)
+                    dataUser = existUserData
+                    localStorage.setItem('userData', JSON.stringify(dataUser));
+                    ok = !null
+                } else {
+                    ok = null
+                }
 
-                localStorage.setItem('userData', JSON.stringify(dataUser));
+                return ok
             }))
-
     }
+
+
+    exist(email: string): boolean {
+        console.log(' EMail=== ' + email)
+        const existUserData: Data[] = JSON.parse(localStorage.getItem('userData')!);
+        let existY: boolean = false
+        existUserData.forEach((value, index) => {
+            if (value.email == email) {
+                existY = true
+            }
+        });
+
+        console.log('Exist or nOe ' + existY)
+        return existY
+    }
+
 }

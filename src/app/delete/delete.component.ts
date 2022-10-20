@@ -39,8 +39,15 @@ export class DeleteComponent implements OnInit {
       this.authService.deleteUser(this.form.value.email)
         .subscribe(
           data => {
-            this.message = "Successful User Deleted"
-            this.showSuccess();
+
+            if (data == null) {
+              this.message = "User Not Exist"
+              this.showWarn()
+            } else {
+              this.message = "Successful User Deleted"
+              this.showSuccess();
+            }
+
           },
           error => {
             this.message = "Error while User Deleted"
@@ -69,6 +76,15 @@ export class DeleteComponent implements OnInit {
       position: { horizontal: "center", vertical: "top" },
       animation: { type: "fade", duration: 600 },
       type: { style: "error", icon: true },
+    });
+  }
+  public showWarn(): void {
+    this.notificationService.show({
+      content: this.message,
+      hideAfter: 600,
+      position: { horizontal: "center", vertical: "top" },
+      animation: { type: "fade", duration: 600 },
+      type: { style: "warning", icon: true },
     });
   }
 

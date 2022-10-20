@@ -41,8 +41,8 @@ export class ApiService implements HttpInterceptor {
     }
 
     if (req.method === "PUT" && req.url === `${environment.apiUrl}/users/update`) {
-      const { email } = body;
-      return of(new HttpResponse({ status: 200, body: email }))
+      const { firstName, lastName, email, role, phoneNumber } = body;
+      return of(new HttpResponse({ status: 200, body: { firstName, lastName, email, role, phoneNumber }  }))
     }
 
     if (req.method === "POST" && req.url === `${environment.apiUrl}/users/create`) {

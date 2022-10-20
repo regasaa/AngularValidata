@@ -59,11 +59,16 @@ export class UpdateComponent {
 
   public submitForm(): void {
     if (this.form.valid){
-      this.authService.updateUser(this.form.value.email)
+      this.authService.updateUser(this.form.value.firstName, this.form.value.lastName, this.form.value.email, this.form.value.role.value, this.form.value.phoneNumber)
       .subscribe(
         data => {
+          if (data == null) {
+            this.message = "Email Not Exist"
+            this.showWarn()
+          } else {
           this.message = "Successful User Updated"
           this.showSuccess();
+          }
         },
         error => {
           this.message = "Error While User Update"
@@ -92,6 +97,16 @@ export class UpdateComponent {
       position: { horizontal: "center", vertical: "top" },
       animation: { type: "fade", duration: 600 },
       type: { style: "error", icon: true },
+    });
+  }
+
+  public showWarn(): void {
+    this.notificationService.show({
+      content: this.message,
+      hideAfter: 600,
+      position: { horizontal: "center", vertical: "top" },
+      animation: { type: "fade", duration: 600 },
+      type: { style: "warning", icon: true },
     });
   }
 
